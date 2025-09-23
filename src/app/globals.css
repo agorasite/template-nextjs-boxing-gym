@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Brand tokens */
+:root{
+  --brand-red: #dc2626;     /* red-600 */
+  --brand-blue: #0a2540;    /* dark navy */
+  --brand-black: #0b0b0c;   /* near-black */
+}
+
+/* Smooth scrolling + antialias */
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Utilities using brand tokens (kept minimal) */
+.btn-red {
+  @apply inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-white;
+  background: var(--brand-red);
+}
+.btn-red:hover { opacity: .9; }
+
+.link-red { color: var(--brand-red); }
+.link-red:hover { opacity: .9; }
