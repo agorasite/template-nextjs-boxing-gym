@@ -1,5 +1,6 @@
+// components/classes/ClassGrid.tsx
 import ClassCard from './ClassCard'
-import type { GymClass } from './ClassesContent'
+import type { GymClass } from '@/lib/classes' // ← was './ClassesContent'
 
 export default function ClassGrid({ classes }: { classes: GymClass[] }) {
   if (!classes.length) {

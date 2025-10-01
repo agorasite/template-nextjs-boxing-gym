@@ -19,14 +19,14 @@ import {
 type NavItem = { name: string; href: string; Icon: LucideIcon }
 
 const items: NavItem[] = [
-  { name: 'Home', href: '/', Icon: HomeIcon },
-  { name: 'About', href: '/about', Icon: Info },
-  { name: 'Classes', href: '/classes', Icon: Dumbbell },
-  { name: 'Offerings', href: '/offerings', Icon: CreditCard },
+  // { name: 'Home', href: '/', Icon: HomeIcon },
+  // { name: 'About', href: '/about', Icon: Info },
+  { name: 'Classes', href: '/classes', Icon: Users },
+  // { name: 'Offerings', href: '/offerings', Icon: CreditCard },
   //{ name: 'Pricing', href: '/pricing', Icon: CreditCard },
-  { name: 'Join us', href: '/join', Icon: Users },
-  { name: 'Sign up', href: '/signup', Icon: UserPlus },
-  { name: 'Login', href: '/login', Icon: LogIn },
+  // { name: 'Join us', href: '/join', Icon: Users },
+  // { name: 'Sign up', href: '/signup', Icon: UserPlus },
+  // { name: 'Login', href: '/login', Icon: LogIn },
   { name: 'Contact', href: '/contact', Icon: Mail },
 ]
 

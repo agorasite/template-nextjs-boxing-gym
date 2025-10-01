@@ -2,96 +2,14 @@
 
 import { useDeferredValue, useMemo, useState } from 'react'
 import ClassGrid from './ClassGrid'
+import type { GymClass, ClassLevel } from '@/lib/classes'
 
-export type ClassLevel = 'Beginner' | 'All Levels' | 'Intermediate' | 'Advanced'
-export type GymClass = {
-  id: number
-  title: string
-  level: ClassLevel
-  duration: number // minutes
-  coach: string
-  days: Array<'Mon'|'Tue'|'Wed'|'Thu'|'Fri'|'Sat'>
-  time: string      // "18:30"
-  img: string
-  tags: string[]
-  summary: string
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat'] as const
+type Day = typeof DAYS[number]
+
+type Props = {
+  initialClasses: GymClass[]
 }
-
-// ---- SAMPLE DATA (stable, module scope) ----
-const ALL_CLASSES: GymClass[] = [
-  {
-    id: 1,
-    title: 'Boxing Fundamentals',
-    level: 'Beginner',
-    duration: 60,
-    coach: 'Giannis',
-    days: ['Mon','Wed','Fri'],
-    time: '18:30',
-    img: '/images/gym-1.jpg',
-    tags: ['Technique', 'Footwork', 'Bag work'],
-    summary: 'Learn stance, guard, footwork, jab-cross, and combos with pads & bags.',
-  },
-  {
-    id: 2,
-    title: 'HIIT Boxing',
-    level: 'All Levels',
-    duration: 45,
-    coach: 'Eleni',
-    days: ['Tue','Thu','Sat'],
-    time: '19:15',
-    img: '/images/gym-2.jpg',
-    tags: ['Conditioning', 'Intervals', 'Sweat'],
-    summary: 'High-intensity rounds mixing mitts, bags, core, and bodyweight.',
-  },
-  {
-    id: 3,
-    title: 'Sparring Fundamentals',
-    level: 'Intermediate',
-    duration: 75,
-    coach: 'Nikos',
-    days: ['Wed','Fri'],
-    time: '20:00',
-    img: '/images/gym-5.jpg',
-    tags: ['Ring IQ', 'Defense', 'Timing'],
-    summary: 'Controlled contact, defense-first sparring, and fight IQ drills.',
-  },
-  {
-    id: 4,
-    title: 'Strength & Conditioning',
-    level: 'All Levels',
-    duration: 60,
-    coach: 'Eleni',
-    days: ['Mon','Thu','Sat'],
-    time: '17:30',
-    img: '/images/gym-6.jpg',
-    tags: ['Strength', 'Mobility', 'Power'],
-    summary: 'Smart strength sessions for speed, power, and longevity.',
-  },
-  {
-    id: 5,
-    title: 'Advanced Boxing',
-    level: 'Advanced',
-    duration: 75,
-    coach: 'Giannis',
-    days: ['Tue','Thu'],
-    time: '20:15',
-    img: '/images/gym-8.jpg',
-    tags: ['Advanced', 'Strategy', 'Conditioning'],
-    summary: 'High-pace technical work, ring generalship, and advanced combos.',
-  },
-  {
-    id: 6,
-    title: 'Women Only Boxing',
-    level: 'All Levels',
-    duration: 60,
-    coach: 'Eleni',
-    days: ['Sat'],
-    time: '11:00',
-    img: '/images/gym-9.jpg',
-    tags: ['Supportive', 'Technique', 'Cardio'],
-    summary: 'Technique-first boxing class in a supportive crew environment.',
-  },
-]
 
 const LEVELS: Array<{label: ClassLevel | 'All'; value: ClassLevel | 'All'}> = [
   { label: 'All', value: 'All' },
@@ -101,31 +19,37 @@ const LEVELS: Array<{label: ClassLevel | 'All'; value: ClassLevel | 'All'}> = [
   { label: 'Advanced', value: 'Advanced' },
 ]
 
-const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat'] as const
-type Day = typeof DAYS[number]
-
-export default function ClassesContent() {
-  // Filters
+export default function ClassesContent({ initialClasses }: Props) {
   const [q, setQ] = useState('')
   const [level, setLevel] = useState<ClassLevel | 'All'>('All')
   const [day, setDay] = useState<Day | 'All'>('All')
 
-  // keep UI responsive while typing
   const qDeferred = useDeferredValue(q)
 
   const filtered = useMemo(() => {
     const qlc = qDeferred.trim().toLowerCase()
-    return ALL_CLASSES.filter(c => {
-      const matchesQ = !qlc
-        || c.title.toLowerCase().includes(qlc)
-        || c.tags.join(' ').toLowerCase().includes(qlc)
-        || c.summary.toLowerCase().includes(qlc)
-        || c.coach.toLowerCase().includes(qlc)
+    return initialClasses.filter(c => {
+      const matchesQ =
+        !qlc ||
+        c.title.toLowerCase().includes(qlc) ||
+        c.tags.join(' ').toLowerCase().includes(qlc) ||
+        c.summary.toLowerCase().includes(qlc) ||
+        c.coach.toLowerCase().includes(qlc)
+
       const matchesLevel = level === 'All' ? true : c.level === level
       const matchesDay = day === 'All' ? true : c.days.includes(day)
       return matchesQ && matchesLevel && matchesDay
     })
-  }, [qDeferred, level, day])
+  }, [qDeferred, level, day, initialClasses])
+
+    const hasData = initialClasses.length > 0;
+    const hasMatches = filtered.length > 0;
+
+    const resetFilters = () => {
+      setQ('');
+      setLevel('All');
+      setDay('All');
+    };
 
   return (
     <section className="bg-neutral-950 py-12">
@@ -141,7 +65,7 @@ export default function ClassesContent() {
               className="w-full rounded-xl border border-white/15 bg-neutral-900 px-4 py-2 text-sm text-white placeholder-white/50 outline-none focus:border-[var(--brand-red)] sm:max-w-sm"
             />
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {LEVELS.map(l => (
                 <button
                   key={l.value}
@@ -166,24 +90,67 @@ export default function ClassesContent() {
                 <option value="All">All days</option>
                 {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
+
+              {(q || level !== 'All' || day !== 'All') && (
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="ml-1 rounded-xl border border-white/15 px-3 py-2 text-xs text-white/80 hover:bg-white/5"
+                  aria-label="Reset filters"
+                >
+                  Reset
+                </button>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Result count */}
-        <div className="mt-4 flex items-center justify-between text-sm text-white/70">
-          <span>{filtered.length} class{filtered.length === 1 ? '' : 'es'} found</span>
-          <span>
-            Tip: type <span className="text-[var(--brand-red)]">sparring</span> or{' '}
-            <span className="text-[var(--brand-red)]">beginner</span>
-          </span>
-        </div>
+        {/* No data from backend */}
+        {!hasData && (
+          <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
+            <h3 className="text-lg font-semibold">No classes available</h3>
+            <p className="mt-2 text-white/70">
+              We couldn’t load classes from the server. Please try again later.
+            </p>
+          </div>
+        )}
 
-        {/* Grid */}
-        <div className="mt-6">
-          <ClassGrid classes={filtered} />
-        </div>
+        {/* Results (only if we have data) */}
+        {hasData && (
+          <>
+            {/* Result count */}
+            <div className="mt-4 flex items-center justify-between text-sm text-white/70">
+              <span>{filtered.length} class{filtered.length === 1 ? '' : 'es'} found</span>
+              {hasMatches && (
+                <span>
+                  Tip: type <span className="text-[var(--brand-red)]">sparring</span> or{' '}
+                  <span className="text-[var(--brand-red)]">beginner</span>
+                </span>
+              )}
+            </div>
+
+            {/* No matches */}
+            {!hasMatches && (
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
+                <h3 className="text-lg font-semibold">No matches</h3>
+                <p className="mt-2 text-white/70">
+                  Try different keywords or{' '}
+                  <button onClick={resetFilters} className="underline decoration-[var(--brand-red)] underline-offset-4">
+                    reset filters
+                  </button>.
+                </p>
+              </div>
+            )}
+
+            {/* Grid */}
+            {hasMatches && (
+              <div className="mt-6">
+                <ClassGrid classes={filtered} />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
-  )
+  );
 }

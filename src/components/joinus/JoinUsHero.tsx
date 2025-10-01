@@ -5,7 +5,7 @@ export default function ClassesHero() {
     <section className="relative isolate overflow-hidden bg-[var(--brand-black)]">
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/images/gym-5.jpg"
+          src="/images/gym-3.jpg"
           alt=""
           fill
           priority
