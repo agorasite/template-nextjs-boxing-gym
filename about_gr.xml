@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+  <details>
+    <title>
+      <name>Πρότυπο Αθλητικής Αίθουσας Boxing</name>
+    </title>
+    <images>
+      <image main="true">
+        <path>screenshots/home.png</path>
+        <title>Αρχική</title>
+        <pageUrl>/</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/about.png</path>
+        <title>Σχετικά</title>
+        <pageUrl>/about</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/classes.png</path>
+        <title>Μαθήματα</title>
+        <pageUrl>/classes</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/contact.png</path>
+        <title>Επικοινωνία</title>
+        <pageUrl>/contact</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/offerings.png</path>
+        <title>Υπηρεσίες</title>
+        <pageUrl>/offerings</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/pricing.png</path>
+        <title>Τιμές</title>
+        <pageUrl>/pricing</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/join.png</path>
+        <title>Εγγραφή</title>
+        <pageUrl>/join</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/login.png</path>
+        <title>Σύνδεση</title>
+        <pageUrl>/login</pageUrl>
+      </image>
+      <image>
+        <path>screenshots/signup.png</path>
+        <title>Δημιουργία Λογαριασμού</title>
+        <pageUrl>/signup</pageUrl>
+      </image>
+    </images>
+    <technologies>
+      <technology>
+        <name>Next.js</name>
+        <icon class="fas fa-n" color="#000000"/>
+      </technology>
+      <technology>
+        <name>TypeScript</name>
+        <icon class="fab fa-js" color="#3178c6"/>
+      </technology>
+      <technology>
+        <name>React</name>
+        <icon class="fab fa-react" color="#61dafb"/>
+      </technology>
+      <technology>
+        <name>Tailwind CSS</name>
+        <icon class="fab fa-css3-alt" color="#06b6d4"/>
+      </technology>
+    </technologies>
+    <published>2025-09-23</published>
+    <downloads>
+      <count>0</count>
+    </downloads>
+    <views>
+      <count>0</count>
+    </views>
+    <pageType>
+      <type>
+        <name>Πρότυπο</name>
+        <icon class="fas fa-file-code" color="#0d6efd"/>
+      </type>
+    </pageType>
+    <downloadInstructions>Κατεβάστε το πρότυπο από το GitHub και ακολουθήστε τις οδηγίες του repository.<download link="https://github.com/agorasite/template-nextjs-boxing-gym/archive/refs/heads/main.zip" label="Λήψη Προτύπου"/></downloadInstructions>
+    <pageSize>
+      <browser>2MB</browser>
+      <disk>195MB</disk>
+    </pageSize>
+  </details>
+</template>
